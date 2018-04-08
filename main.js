@@ -20,7 +20,7 @@ var blockNumber         = web3.eth.blockNumber;
 
 console.log("whoami: " + whoami);
 console.log("blockNumber: " + blockNumber);
-var currentBalance = web3.fromWei(web3.eth.getBalance(acc), "ether");
+var currentBalance = web3.fromWei(web3.eth.getBalance(whoami), "ether");
 console.log("Current Balance: " + currentBalance);
 
 function sleep(milliseconds) {
