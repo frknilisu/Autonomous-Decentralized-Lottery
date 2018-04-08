@@ -4,21 +4,21 @@
   "description": "Ethereum Sync Script",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js",
+    "start": "nohup nodejs main.js &",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/transmute-industries/monarch-chain.git"
+    "url": "https://github.com/frknilisu/Autonomous-Decentralized-Lottery.git"
   },
   "author": "frknilisu",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/transmute-industries/monarch-chain/issues"
+    "url": "https://github.com/frknilisu/Autonomous-Decentralized-Lottery/issues"
   },
-  "homepage": "https://github.com/transmute-industries/monarch-chain#readme",
+  "homepage": "https://github.com/frknilisu/Autonomous-Decentralized-Lottery",
   "dependencies": {
-	"angular": "~1.5.8",
+	 "angular": "~1.5.8",
     "angularjs": "0.0.1",
     "body-parser": "~1.15.2",
     "cookie-parser": "~1.4.3",
