@@ -1,0 +1,32 @@
+{
+  "name": "frkn",
+  "version": "1.0.0",
+  "description": "Ethereum Sync Script",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transmute-industries/monarch-chain.git"
+  },
+  "author": "frknilisu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/transmute-industries/monarch-chain/issues"
+  },
+  "homepage": "https://github.com/transmute-industries/monarch-chain#readme",
+  "dependencies": {
+	"angular": "~1.5.8",
+    "angularjs": "0.0.1",
+    "body-parser": "~1.15.2",
+    "cookie-parser": "~1.4.3",
+    "ethereum.js": "~0.2.4",
+    "express": "~4.14.0",
+    "mongodb": "~2.2.9",
+    "multer": "~1.2.0",
+    "web3": "^0.17.0-beta"
+  }
+}
+
