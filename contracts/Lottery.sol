@@ -223,9 +223,9 @@ contract Lottery {
 			Ticket memory ticket = purchased_tickets[lottery_no-1][msg.sender][i];
 			if (!ticket.is_verified){
 
-				bool verify = ( keccak256(_rand_nums[0], msg.sender) == ticket.rand_hashes[0] && 
-								keccak256(_rand_nums[1], msg.sender) == ticket.rand_hashes[1] && 
-								keccak256(_rand_nums[2], msg.sender) == ticket.rand_hashes[2] );
+				bool verify = ( keccak256(intToString(_rand_nums[0]), msg.sender) == ticket.rand_hashes[0] && 
+								keccak256(intToString(_rand_nums[1]), msg.sender) == ticket.rand_hashes[1] && 
+								keccak256(intToString(_rand_nums[2]), msg.sender) == ticket.rand_hashes[2] );
 				if (verify) {
 					ticket.is_verified = true;
 					ticket.rand_nums = _rand_nums;
@@ -300,6 +300,8 @@ contract Lottery {
 			}
 			lottery_balance[lottery_no] += lottery_balance[lottery_no-1];
 
+			delete revealed_tickets;
+
 			reveal_end += block_period;
 			
 		} else {
@@ -315,6 +317,22 @@ contract Lottery {
 	function getLotteryBalance() constant public returns(uint) {
     	return lottery_balance[lottery_no];
   	}
+
+  	// send the balance of purchaser to his account
+	function withdrawBalance() public returns (bool success) {
+		uint amnt;
+		amnt = balance_of_purchasers[msg.sender];
+		if ( amnt > 0 ) { 
+			balance_of_purchasers[msg.sender] = 0;
+			if (!msg.sender.send(amnt)) {
+				balance_of_purchasers[msg.sender] = amnt;
+			}
+		}
+		
+		emit AwardWinnings(msg.sender, amnt);
+		//resetLottery();
+		return true;
+	}
 
 
 	function random() private view returns (int[]) {
@@ -369,6 +387,29 @@ contract Lottery {
         return string(bytesStringTrimmed);
     }
 
+    function intToString(int k) constant returns (string str) {
+    	uint v;
+    	if(k < 0) {
+    		v = uint(-k);
+		} else {
+    		v = uint(k);
+		}
+        uint maxlength = 100;
+        bytes memory reversed = new bytes(maxlength);
+        uint i = 0;
+        while (v != 0) {
+            uint remainder = v % 10;
+            v = v / 10;
+            reversed[i++] = byte(48 + remainder);
+        }
+        bytes memory s = new bytes(i + 1);
+        for (uint j = 0; j <= i; j++) {
+            s[j] = reversed[i - j];
+        }
+        str = string(s);
+        return str;
+    }
+
 
 
     /* 	
@@ -379,15 +420,13 @@ contract Lottery {
 		*********************************************************************
 	*/
 
-	// Event for when tickets are bought
 	event TicketPurchased(address owner, TicketType ttype, uint lottery_no, uint block_num);
 
 	event UpdateLottery(uint block_num, uint lottery_no);
 
 	event RevealTicket(address owner, int[] _rand_nums, uint block_num, uint lottery_no);
 
-	// Event for declaring the winner
-	//event AwardWinnings(address _to, uint _winnings);
+	event AwardWinnings(address owner, uint amnt);
 
 	// Event for lottery reset
 	//event ResetLottery();

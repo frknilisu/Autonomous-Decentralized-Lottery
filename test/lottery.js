@@ -1,6 +1,4 @@
 const Lottery = artifacts.require('Lottery')
-var Promise = require('promise');
-
 
 // advances timestamp of the last block
 const increaseTime = function(addSeconds) {
@@ -34,9 +32,9 @@ const mineBlocks = function (addBlocks) {
 contract('Lottery', function(accounts) {
 
 	it("purchase full ticket", function(){
-		var number1 = "1";
-		var number2 = "2";
-		var number3 = "3";
+		var number1 = 1;
+		var number2 = 2;
+		var number3 = 3;
 
 		var numbers = [];
 		numbers.push(number1);
@@ -64,7 +62,7 @@ contract('Lottery', function(accounts) {
 			lotteryBalanceStart = parseInt(balance);
 			return lottery.buyFullTicket(hashes,{from:accounts[0],value:web3.toWei(8,"finney")});
 		}).then(function(result){
-			console.log("success: full ticket is purchased");
+			//console.log("success: full ticket is purchased");
 			return lottery.getLotteryBalance.call();
 		}, function(error){
 			assert.fail("full ticket should be purchased");
@@ -75,21 +73,19 @@ contract('Lottery', function(accounts) {
 
 	});
 
-	
-
 	it("purchase half ticket", function(){
-		var number1 = "4";
-		var number2 = "5";
-		var number3 = "6";
+		var number1 = 4;
+		var number2 = 5;
+		var number3 = 6;
 
 		var numbers = [];
 		numbers.push(number1);
 		numbers.push(number2);
 		numbers.push(number3);
 
-		var ticketHash1 = web3.sha3(number1,accounts[0]);
-		var ticketHash2 = web3.sha3(number2,accounts[0]);
-		var ticketHash3 = web3.sha3(number3,accounts[0]);
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
 
 		var hashes = [];
 		hashes.push(ticketHash1);
@@ -108,7 +104,7 @@ contract('Lottery', function(accounts) {
 			lotteryBalanceStart = parseInt(balance);
 			return lottery.buyHalfTicket(hashes,{from:accounts[0],value:web3.toWei(4,"finney")});
 		}).then(function(result){
-			console.log("success: half ticket is purchased");
+			//console.log("success: half ticket is purchased");
 			return lottery.getLotteryBalance.call();
 		}, function(error){
 			assert.fail("half ticket should be purchased");
@@ -120,18 +116,18 @@ contract('Lottery', function(accounts) {
 	});
 
 	it("purchase quarter ticket", function(){
-		var number1 = "7";
-		var number2 = "8";
-		var number3 = "9";
+		var number1 = 7;
+		var number2 = 8;
+		var number3 = 9;
 
 		var numbers = [];
 		numbers.push(number1);
 		numbers.push(number2);
 		numbers.push(number3);
 
-		var ticketHash1 = web3.sha3(number1,accounts[0]);
-		var ticketHash2 = web3.sha3(number2,accounts[0]);
-		var ticketHash3 = web3.sha3(number3,accounts[0]);
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
 
 		var hashes = [];
 		hashes.push(ticketHash1);
@@ -150,7 +146,7 @@ contract('Lottery', function(accounts) {
 			lotteryBalanceStart = parseInt(balance);
 			return lottery.buyQuarterTicket(hashes,{from:accounts[0],value:web3.toWei(2,"finney")});
 		}).then(function(result){
-			console.log("success: quarter ticket is purchased");
+			//console.log("success: quarter ticket is purchased");
 			return lottery.getLotteryBalance.call();
 		}, function(error){
 			assert.fail("quarter ticket should be purchased");
@@ -161,31 +157,27 @@ contract('Lottery', function(accounts) {
 
 	});
 
-
-
-
-
-
-
-
-
-
-
-
+	/* 	
+		*********************************************************************
+		*																	*
+		*																	*
+		*																	*
+		*********************************************************************
+	*/
 
 	it("revert full ticket purchase", function(){
-		var number1 = "10";
-		var number2 = "11";
-		var number3 = "12";
+		var number1 = 10;
+		var number2 = 11;
+		var number3 = 12;
 
 		var numbers = [];
 		numbers.push(number1);
 		numbers.push(number2);
 		numbers.push(number3);
 
-		var ticketHash1 = web3.sha3(number1,accounts[0]);
-		var ticketHash2 = web3.sha3(number2,accounts[0]);
-		var ticketHash3 = web3.sha3(number3,accounts[0]);
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
 
 		var hashes = [];
 		hashes.push(ticketHash1);
@@ -203,24 +195,24 @@ contract('Lottery', function(accounts) {
 		}).then(function (result) {
 			assert.fail("it should revert full ticket purchase when the purchaser send not equal to 8 finney");
 		}, function (error) {
-			console.log("success: full ticket purchase is reverted when the purchaser send not equal to 8 finney");
+			//console.log("success: full ticket purchase is reverted when the purchaser send not equal to 8 finney");
 		})
 
 	});
 
 	it("revert half ticket purchase", function(){
-		var number1 = "13";
-		var number2 = "14";
-		var number3 = "15";
+		var number1 = 13;
+		var number2 = 14;
+		var number3 = 15;
 
 		var numbers = [];
 		numbers.push(number1);
 		numbers.push(number2);
 		numbers.push(number3);
 
-		var ticketHash1 = web3.sha3(number1,accounts[0]);
-		var ticketHash2 = web3.sha3(number2,accounts[0]);
-		var ticketHash3 = web3.sha3(number3,accounts[0]);
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
 
 		var hashes = [];
 		hashes.push(ticketHash1);
@@ -238,24 +230,24 @@ contract('Lottery', function(accounts) {
 		}).then(function (result) {
 			assert.fail("it should revert half ticket purchase when the purchaser send not equal to 4 finney");
 		}, function (error) {
-			console.log("success: half ticket purchase is reverted when the purchaser send not equal to 4 finney");
+			//console.log("success: half ticket purchase is reverted when the purchaser send not equal to 4 finney");
 		})
 
 	});
 
 	it("revert quarter ticket purchase", function(){
-		var number1 = "16";
-		var number2 = "17";
-		var number3 = "18";
+		var number1 = 16;
+		var number2 = 17;
+		var number3 = 18;
 
 		var numbers = [];
 		numbers.push(number1);
 		numbers.push(number2);
 		numbers.push(number3);
 
-		var ticketHash1 = web3.sha3(number1,accounts[0]);
-		var ticketHash2 = web3.sha3(number2,accounts[0]);
-		var ticketHash3 = web3.sha3(number3,accounts[0]);
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
 
 		var hashes = [];
 		hashes.push(ticketHash1);
@@ -273,29 +265,33 @@ contract('Lottery', function(accounts) {
 		}).then(function (result) {
 			assert.fail("it should revert quarter ticket purchase when the purchaser send not equal to 2 finney");
 		}, function (error) {
-			console.log("success: quarter ticket purchase is reverted when the purchaser send not equal to 2 finney");
+			//console.log("success: quarter ticket purchase is reverted when the purchaser send not equal to 2 finney");
 		})
 
 	});
 
 
+	/* 	
+		*********************************************************************
+		*																	*
+		*																	*
+		*																	*
+		*********************************************************************
+	*/
 
-
-
-	
 	it("reveal the purchased ticket with correct numbers", function(){
-		var number1 = "19";
-		var number2 = "20";
-		var number3 = "21";
+		var number1 = 19;
+		var number2 = 20;
+		var number3 = 21;
 
 		var numbers = [];
 		numbers.push(number1);
 		numbers.push(number2);
 		numbers.push(number3);
 
-		var ticketHash1 = web3.sha3(number1,accounts[0]);
-		var ticketHash2 = web3.sha3(number2,accounts[0]);
-		var ticketHash3 = web3.sha3(number3,accounts[0]);
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
 
 		var hashes = [];
 		hashes.push(ticketHash1);
@@ -313,31 +309,27 @@ contract('Lottery', function(accounts) {
 		}).then(function(){
 			return lottery.buyFullTicket(hashes,{from:accounts[0],value:web3.toWei(8,"finney")});
 		}).then(function () {
-			console.log(web3.eth.blockNumber);
 			mineBlocks(52-web3.eth.blockNumber);
-			console.log(web3.eth.blockNumber);
 			return lottery.revealTicket.call(numbers,{from:accounts[0]});
 		}).then(function (result) {
-			console.log("success: the ticket is revealed with correct numbers")
-		}, function(error){
-			assert.fail("the ticket should be revealed with correct numbers");
+			assert.isTrue(result, "the ticket should be revealed with correct numbers");
 		})
 
 	});
 
 	it("reveal the purchased ticket with incorrect numbers", function(){
-		var number1 = "22";
-		var number2 = "23";
-		var number3 = "24";
+		var number1 = 22;
+		var number2 = 23;
+		var number3 = 24;
 
 		var numbers = [];
 		numbers.push(number1);
 		numbers.push(number2);
 		numbers.push(number3);
 
-		var ticketHash1 = web3.sha3(number1,accounts[0]);
-		var ticketHash2 = web3.sha3(number2,accounts[0]);
-		var ticketHash3 = web3.sha3(number3,accounts[0]);
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
 
 		var hashes = [];
 		hashes.push(ticketHash1);
@@ -358,28 +350,33 @@ contract('Lottery', function(accounts) {
 			mineBlocks(52-web3.eth.blockNumber);
 			return lottery.revealTicket.call(["7", "3", "12"],{from:accounts[0]});
 		}).then(function (result) {
-			assert.fail("the ticket should not be revealed with incorrect numbers");
-		}, function(error){
-			console.log("success: the ticket is not revealed with incorrect numbers");
+			assert.isFalse(result, "the ticket should not be revealed with incorrect numbers");
 		})
 
 	});
 
 
-	/*
-	it("purchase more than 2 tickets with same random numbers", function(){
-		var number1 = "19";
-		var number2 = "20";
-		var number3 = "21";
+	/* 	
+		*********************************************************************
+		*																	*
+		*																	*
+		*																	*
+		*********************************************************************
+	*/
+
+	it("purchase more than 2 half tickets with same random numbers", function(){
+		var number1 = 25;
+		var number2 = 26;
+		var number3 = 27;
 
 		var numbers = [];
 		numbers.push(number1);
 		numbers.push(number2);
 		numbers.push(number3);
 
-		var ticketHash1 = web3.sha3(number1,accounts[0]);
-		var ticketHash2 = web3.sha3(number2,accounts[0]);
-		var ticketHash3 = web3.sha3(number3,accounts[0]);
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
 
 		var hashes = [];
 		hashes.push(ticketHash1);
@@ -389,24 +386,160 @@ contract('Lottery', function(accounts) {
 
 		var lotteryBalanceStart;
 		var lotteryBalanceEnd;
-		var contract;
+		var lottery;
 
 		return Lottery.deployed().then(function(instance){
-			contract = instance;
-			return contract.getLotteryBalance.call();
+			lottery = instance;
+			return lottery.getLotteryBalance.call();
 		}).then(function(){
-			return contract.buyFullTicket(hashes,{from:accounts[0],value:web3.toWei(8,"finney")});
-		}).then(function () {
-			console.log(web3.eth.blockNumber);
-			mineBlocks(52-web3.eth.blockNumber);
-			console.log(web3.eth.blockNumber);
-			return contract.revealTicket.call(["3", "12", "7"],{from:accounts[0]});
+			return lottery.buyHalfTicket(hashes,{from:accounts[0],value:web3.toWei(4,"finney")});
+		}).then(function(){
+			return lottery.buyHalfTicket(hashes,{from:accounts[1],value:web3.toWei(4,"finney")});
+		}).then(function(){
+			return lottery.buyHalfTicket(hashes,{from:accounts[2],value:web3.toWei(4,"finney")});
 		}).then(function (result) {
-            assert.fail("reveal ticket with wrong numbers is failed");
-        }, function(error){
-			console.log("it should not purchase more than 2 tickets with same random numbers");
+			assert.fail("it cannot be purchase more than 2 half tickets with same numbers");
+		}, function(error){
+			//console.log("success: ");
 		})
 
+	});
+
+	it("purchase more than 4 quarter tickets with same random numbers", function(){
+		var number1 = 28;
+		var number2 = 29;
+		var number3 = 30;
+
+		var numbers = [];
+		numbers.push(number1);
+		numbers.push(number2);
+		numbers.push(number3);
+
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
+
+		var hashes = [];
+		hashes.push(ticketHash1);
+		hashes.push(ticketHash2);
+		hashes.push(ticketHash3);
+		
+
+		var lotteryBalanceStart;
+		var lotteryBalanceEnd;
+		var lottery;
+
+		return Lottery.deployed().then(function(instance){
+			lottery = instance;
+			return lottery.getLotteryBalance.call();
+		}).then(function(){
+			return lottery.buyQuarterTicket(hashes,{from:accounts[0],value:web3.toWei(2,"finney")});
+		}).then(function(){
+			return lottery.buyQuarterTicket(hashes,{from:accounts[1],value:web3.toWei(2,"finney")});
+		}).then(function(){
+			return lottery.buyQuarterTicket(hashes,{from:accounts[2],value:web3.toWei(2,"finney")});
+		}).then(function(){
+			return lottery.buyQuarterTicket(hashes,{from:accounts[3],value:web3.toWei(2,"finney")});
+		}).then(function(){
+			return lottery.buyQuarterTicket(hashes,{from:accounts[4],value:web3.toWei(2,"finney")});
+		}).then(function (result) {
+			assert.fail("it cannot be purchase more than 4 quarter tickets with same numbers");
+		}, function(error){
+			//console.log("success: ");
+		})
+
+	});
+
+	it("purchase different type of tickets with same random numbers", function(){
+		var number1 = 31;
+		var number2 = 32;
+		var number3 = 33;
+
+		var numbers = [];
+		numbers.push(number1);
+		numbers.push(number2);
+		numbers.push(number3);
+
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
+
+		var hashes = [];
+		hashes.push(ticketHash1);
+		hashes.push(ticketHash2);
+		hashes.push(ticketHash3);
+		
+
+		var lotteryBalanceStart;
+		var lotteryBalanceEnd;
+		var lottery;
+
+		return Lottery.deployed().then(function(instance){
+			lottery = instance;
+			return lottery.getLotteryBalance.call();
+		}).then(function(){
+			return lottery.buyQuarterTicket(hashes,{from:accounts[0],value:web3.toWei(2,"finney")});
+		}).then(function(){
+			return lottery.buyHalfTicket(hashes,{from:accounts[1],value:web3.toWei(4,"finney")});
+		}).then(function (result) {
+			assert.fail("it cannot be purchase different type of tickets with same numbers");
+		}, function(error){
+			//console.log("success: ");
+		})
+
+	});
+
+	/* 	
+		*********************************************************************
+		*																	*
+		*																	*
+		*																	*
+		*********************************************************************
+	*/
+
+	/*
+	it("get price if the purchaser won", function(){
+		var number1 = 34;
+		var number2 = 35;
+		var number3 = 36;
+
+		var numbers = [];
+		numbers.push(number1);
+		numbers.push(number2);
+		numbers.push(number3);
+
+		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
+		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
+		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
+
+		var hashes = [];
+		hashes.push(ticketHash1);
+		hashes.push(ticketHash2);
+		hashes.push(ticketHash3);
+		
+
+		var lotteryBalanceStart;
+		var lotteryBalanceEnd;
+		var lottery;
+
+		return Lottery.deployed().then(function(instance){
+			lottery = instance;
+			return lottery.getLotteryBalance.call();
+		}).then(function(){
+			return lottery.buyFullTicket(hashes,{from:accounts[0],value:web3.toWei(8,"finney")});
+		}).then(function(){
+			lotteryBalanceStart = web3.eth.getBalance(accounts[0]);
+			mineBlocks(52-web3.eth.blockNumber);
+			return lottery.revealTicket.call(numbers,{from:accounts[0]});
+		}).then(function (result) {
+			assert.isTrue(result, "it cannot be purchase different type of tickets with same numbers");
+			mineBlocks(102-web3.eth.blockNumber);
+			lottery.withdrawBalance.call();
+		}).then(function (result) {
+			console.log(true);
+			lotteryBalanceEnd = web3.eth.getBalance(accounts[0]);
+			assert.equal(lotteryBalanceEnd-lotteryBalanceStart, parseInt(web3.toWei(4,"finney")),"at the start of the lottery contract balance should be 0");
+		})
 
 	});*/
 });
