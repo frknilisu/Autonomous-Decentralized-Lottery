@@ -279,43 +279,6 @@ contract('Lottery', function(accounts) {
 		*********************************************************************
 	*/
 
-	it("reveal the purchased ticket with correct numbers", function(){
-		var number1 = 19;
-		var number2 = 20;
-		var number3 = 21;
-
-		var numbers = [];
-		numbers.push(number1);
-		numbers.push(number2);
-		numbers.push(number3);
-
-		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
-		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
-		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
-
-		var hashes = [];
-		hashes.push(ticketHash1);
-		hashes.push(ticketHash2);
-		hashes.push(ticketHash3);
-		
-
-		var lotteryBalanceStart;
-		var lotteryBalanceEnd;
-		var lottery;
-
-		return Lottery.deployed().then(function(instance){
-			lottery = instance;
-			return lottery.getLotteryBalance.call();
-		}).then(function(){
-			return lottery.buyFullTicket(hashes,{from:accounts[0],value:web3.toWei(8,"finney")});
-		}).then(function () {
-			mineBlocks(52-web3.eth.blockNumber);
-			return lottery.revealTicket.call(numbers,{from:accounts[0]});
-		}).then(function (result) {
-			assert.isTrue(result, "the ticket should be revealed with correct numbers");
-		})
-
-	});
 
 	it("reveal the purchased ticket with incorrect numbers", function(){
 		var number1 = 22;
@@ -497,49 +460,4 @@ contract('Lottery', function(accounts) {
 		*********************************************************************
 	*/
 
-	/*
-	it("get price if the purchaser won", function(){
-		var number1 = 34;
-		var number2 = 35;
-		var number3 = 36;
-
-		var numbers = [];
-		numbers.push(number1);
-		numbers.push(number2);
-		numbers.push(number3);
-
-		var ticketHash1 = web3.sha3(number1.toString(),accounts[0]);
-		var ticketHash2 = web3.sha3(number2.toString(),accounts[0]);
-		var ticketHash3 = web3.sha3(number3.toString(),accounts[0]);
-
-		var hashes = [];
-		hashes.push(ticketHash1);
-		hashes.push(ticketHash2);
-		hashes.push(ticketHash3);
-		
-
-		var lotteryBalanceStart;
-		var lotteryBalanceEnd;
-		var lottery;
-
-		return Lottery.deployed().then(function(instance){
-			lottery = instance;
-			return lottery.getLotteryBalance.call();
-		}).then(function(){
-			return lottery.buyFullTicket(hashes,{from:accounts[0],value:web3.toWei(8,"finney")});
-		}).then(function(){
-			lotteryBalanceStart = web3.eth.getBalance(accounts[0]);
-			mineBlocks(52-web3.eth.blockNumber);
-			return lottery.revealTicket.call(numbers,{from:accounts[0]});
-		}).then(function (result) {
-			assert.isTrue(result, "it cannot be purchase different type of tickets with same numbers");
-			mineBlocks(102-web3.eth.blockNumber);
-			lottery.withdrawBalance.call();
-		}).then(function (result) {
-			console.log(true);
-			lotteryBalanceEnd = web3.eth.getBalance(accounts[0]);
-			assert.equal(lotteryBalanceEnd-lotteryBalanceStart, parseInt(web3.toWei(4,"finney")),"at the start of the lottery contract balance should be 0");
-		})
-
-	});*/
 });
