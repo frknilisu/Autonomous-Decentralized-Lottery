@@ -75,7 +75,7 @@ contract Lottery {
 		}
 
 		// concatenation of three hashes as string
-		//string memory concat_hash = bytes32ArrayToString(_rand_hashes);
+		string memory concat_hash = bytes32ArrayToString(_rand_hashes);
 
 		if (msg.value == full_pay) {
 
@@ -92,20 +92,114 @@ contract Lottery {
 				number of sold Full tickets should be smaller than 1 (there can be only one Full ticket)
 				these three random numbers must not for other TicketTypes, since trying buy Full ticket
 			*/
-			//if ( !(used_randoms[concat_hash][0] < 1 && 
-			//	 used_randoms[concat_hash][1] == 0 &&
-			//	 used_randoms[concat_hash][2] == 0 )){
-			//	revert();
-			//} else {
+			if ( !(used_randoms[concat_hash][0] < 1 && 
+				 used_randoms[concat_hash][1] == 0 &&
+				 used_randoms[concat_hash][2] == 0 )){
+				revert();
+			} else {
 
-			//	used_randoms[concat_hash][0] += 1;
+				used_randoms[concat_hash][0] += 1;
 
 				purchased_tickets[lottery_no][msg.sender].push(ticket);
 				lottery_balance[lottery_no] += msg.value;
 
-				//TicketsBought(msg.sender, msg.value, ticket);
+				emit TicketPurchased(ticket.owner, ticket.ttype, lottery_no, block_num);
 				return true;
-			//}
+			}
+
+		} else {
+			revert();
+		}
+	}
+
+
+	function buyHalfTicket(bytes32[] _rand_hashes) public payable returns (bool) {
+		uint block_num = block.number;
+
+
+		if (block_num >= purchase_end) {
+			updateLottery();
+		}
+
+		// concatenation of three hashes as string
+		string memory concat_hash = bytes32ArrayToString(_rand_hashes);
+
+		if (msg.value == half_pay) {
+
+			Ticket memory ticket = Ticket({
+				owner: msg.sender,
+				rand_hashes: _rand_hashes,
+				ttype: TicketType.Half,
+				is_verified: false,
+				rand_nums: new int[](3)			
+			});
+
+
+			/* 
+				number of sold Full tickets should be smaller than 1 (there can be only one Full ticket)
+				these three random numbers must not for other TicketTypes, since trying buy Full ticket
+			*/
+			if ( !(used_randoms[concat_hash][0] == 0 && 
+				 used_randoms[concat_hash][1] < 2 &&
+				 used_randoms[concat_hash][2] == 0 )){
+				revert();
+			} else {
+
+				used_randoms[concat_hash][1] += 1;
+
+				purchased_tickets[lottery_no][msg.sender].push(ticket);
+				lottery_balance[lottery_no] += msg.value;
+
+				emit TicketPurchased(ticket.owner, ticket.ttype, lottery_no, block_num);
+				return true;
+			}
+
+		} else {
+			revert();
+		}
+	}
+
+
+	function buyQuarterTicket(bytes32[] _rand_hashes) public payable returns (bool) {
+		uint block_num = block.number;
+
+
+		if (block_num >= purchase_end) {
+			updateLottery();
+		}
+
+		// concatenation of three hashes as string
+		string memory concat_hash = bytes32ArrayToString(_rand_hashes);
+
+		if (msg.value == quarter_pay) {
+
+			Ticket memory ticket = Ticket({
+				owner: msg.sender,
+				rand_hashes: _rand_hashes,
+				ttype: TicketType.Quarter,
+				is_verified: false,
+				rand_nums: new int[](3)			
+			});
+
+
+			/* 
+				number of sold Full tickets should be smaller than 1 (there can be only one Full ticket)
+				these three random numbers must not for other TicketTypes, since trying buy Full ticket
+			*/
+			if ( !(used_randoms[concat_hash][0] == 0 && 
+				 used_randoms[concat_hash][1] == 0 &&
+				 used_randoms[concat_hash][2] < 4 )){
+				revert();
+			} else {
+
+				used_randoms[concat_hash][2] += 1;
+
+				purchased_tickets[lottery_no][msg.sender].push(ticket);
+				lottery_balance[lottery_no] += msg.value;
+
+				emit TicketPurchased(ticket.owner, ticket.ttype, lottery_no, block_num);
+				return true;
+			}
 
 		} else {
 			revert();
@@ -115,6 +209,8 @@ contract Lottery {
 
 	function revealTicket(int[] _rand_nums) public returns(bool) {
 		uint block_num = block.number;
+
+		emit RevealTicket(msg.sender, _rand_nums, block_num, lottery_no);
 
 
 		if (block_num >= reveal_end) {
@@ -144,7 +240,11 @@ contract Lottery {
 
 	function updateLottery() private {
 
+
 		uint block_num = block.number;
+
+		emit UpdateLottery(block_num, lottery_no);
+
 		purchase_end += block_period;
 		lottery_balance.push(0);
 		
@@ -280,7 +380,11 @@ contract Lottery {
 	*/
 
 	// Event for when tickets are bought
-	//event TicketsBought(address indexed _from, uint _quantity);
+	event TicketPurchased(address owner, TicketType ttype, uint lottery_no, uint block_num);
+
+	event UpdateLottery(uint block_num, uint lottery_no);
+
+	event RevealTicket(address owner, int[] _rand_nums, uint block_num, uint lottery_no);
 
 	// Event for declaring the winner
 	//event AwardWinnings(address _to, uint _winnings);
